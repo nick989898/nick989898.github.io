@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>小学生奖惩小工具-日常积分走势</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" href="css/mdui.min.css">
+		<script src="js/mdui.min.js"></script>
+
+		<script src="js/Chart.js"></script>
+	</head>
+
+	<body>
+
+		<body class="mdui-theme-primary-green">
+			<div class="mdui-toolbar mdui-color-theme mdui-appbar-fixed">
+				<span class="mdui-typo-title" style="color:white;">陈思合-四年级-日常积分</span>
+				<div class="mdui-toolbar-spacer"></div>
+				
+			</div>
+			<div class="mdui-container">
+				<canvas id="myChart" width="800" height="300"></canvas>
+				<div class="noExtension" id="noExtension">
+					提示: 请安装
+					<a target="_blank" href="https://github.com/ChengOrangeJu/WebExtensionWallet">WebExtensionWallet</a> 再使用积分小工具。
+				</div>
+
+				<div class="secret-wrap" id="app" v-clock>
+					<div class="inp-wrap">
+						<div>
+							<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-btn-dense" id="last7days" onclick="getline(7)">近7天</button>
+							<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-btn-dense" id="lastmonth" onclick="getline(30)">近一个月</button>
+							<button class="mdui-btn mdui-btn-raised mdui-ripple mdui-btn-dense" id="lastyear" onclick="getline(30)">近一年</button>
+						</div>
+						<div class="content" id="">
+						<div class="content"><label>作息时间打分：</label><input type="number" id="schedule" min="0" max="100" placeholder=""/><span class="tips">百分制，为是否按照作息时间行动打分</span></div>
+						<div class="content"><label>课堂表现打分：</label><input type="number" id="performance" min="0" max="100" placeholder=""/><span class="tips">百分制，为课堂表现打分</span></div>
+						<div class="content"><label>作业完成打分：</label><input type="number" id="homework" min="0" max="100" placeholder=""/><span class="tips">百分制，为作业完成情况打分</span></div>
+						<div class="content"><label>额外加分：</label><input type="number" id="attrscore" min="0" max="10" placeholder=""/><span class="tips">额外加分，最多10分，直接算入平均得分（例如帮做家务等）</span></div>
+						</div>
+						<div><button id="push" onclick="push()" class="mdui-btn mdui-btn-raised mdui-ripple">提交</button></div>
+						
+					</div>
+				</div>
+			</div>
+			<div id="test"></div>
+			<script src="js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+			<script src="js/nebPay.js" type="text/javascript" charset="utf-8"></script>
+			<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+			<script src="js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+			<script>
+				var NebPay = require("nebpay"); //https://github.com/nebulasio/nebPay
+				var nebPay = new NebPay();
+
+				//检查扩展是否已安装
+				//如果安装了扩展，var“webExtensionWallet”将被注入到web页面中1
+				if(typeof(webExtensionWallet) === "undefined") {
+					//alert ("扩展钱包未安装，请先安装.")
+					$("#noExtension").show();
+				}
+				
+				var l_data = {
+					type: 'line',
+					data: {},
+					options: {
+						responsive: true,
+						title: {
+							display: true,
+							text: 'Chart.js Line Chart'
+						},
+						tooltips: {
+							mode: 'index',
+							intersect: false,
+						},
+						hover: {
+							mode: 'nearest',
+							intersect: true
+						},
+						scales: {
+							xAxes: [{
+								display: true,
+								scaleLabel: {
+									display: true,
+									labelString: 'Date'
+								}
+							}],
+							yAxes: [{
+								display: true,
+								scaleLabel: {
+									display: true,
+									labelString: 'Score'
+								}
+							}]
+						}
+					}
+				}
+
+				var dappAddress = "n1eds2oxoGwCsX5ccp9bWsSHE3YXEhMopiM";
+				var initKey = '';
+
+				//获取积分
+				var linedata = getline(7);
+
+				function getline(lastdays) {
+					var to = dappAddress;
+					var value = "0";
+					var callFunction = "getHisScore";
+					var callArgs = "["+lastdays+",0]"; //in the form of ["args"]
+					nebPay.simulateCall(to, value, callFunction, callArgs, { //使用nebpay的simulateCall接口去执行get查询, 模拟执行.不发送交易,不上链
+						listener: showChartLine //指定回调函数
+					});
+					//return score.getHisScore(lastdays,0);
+				};
+
+				function showChartLine(resp){
+					if(!resp.result) return;
+					
+					var result = eval(JSON.parse(resp.result));
+					//$("#test").html(JSON.stringify(result));
+					var linecolor = ["#F00","0C0","00C","#000"];
+					
+					var lbs=[];
+					var ds=[{
+							label: '平均积分',
+							backgroundColor: '#F00',
+							borderColor: '#F00',
+							data: [],
+							fill: false,
+						}];
+					for(var i=0;i<result.length;i++){
+						var keys = result[i].key.split("_");						
+						var values = result[i].value.split("_");
+						var date =  new Date(parseInt(keys[4]));
+						var y = 1900+date.getYear();
+						var m = "0"+(date.getMonth()+1);
+						var d = "0"+date.getDate();
+						var l = y+"-"+m.substring(m.length-2,m.length)+"-"+d.substring(d.length-2,d.length);
+						lbs.push(l);
+						ds[0].data.push((Number(values[0])+Number(values[1])+Number(values[2]))/3+Number(values[3]));
+					}
+					l_data.data.labels=lbs;
+					l_data.data.datasets=ds;
+					var date =  new Date(1526138946512);
+					var y = 1900+date.getYear();
+					var m = "0"+(date.getMonth()+1);
+					var d = "0"+date.getDate();
+					//$("#test").html(JSON.stringify(l_data));
+					var ctx = $("#myChart").get(0).getContext("2d");
+					var myNewChart = new Chart(ctx,l_data);
+				}
+
+				function push() {
+					if($("#schedule").val() == '') {
+						layer.alert('请为是否按照作息时间行动打分！');
+						return;
+					} else if($("#performance").val() == '') {
+						layer.alert('请为课堂表现打分！');
+						return;
+					} else if($("#homework").val() == '') {
+						layer.alert('请为作业完成情况打分！');
+						return;
+					}
+
+					var to = dappAddress;
+					var value = "0";
+					var callFunction = "set"
+					var callArgs = [];
+					callArgs.push("schedule"+"_"+"performance"+"_"+"homework"+"_"+"attrscore"+"_"+new Date().getTime());
+					callArgs.push($("#schedule").val()+"_"+$("#performance").val()+"_"+$("#homework").val()+"_"+(($("#attrscore").val() == ''?"0":$("#attrscore").val())));
+					nebPay.call(to, value, callFunction, JSON.stringify(callArgs), { //使用nebpay的call接口去调用合约,
+						listener: function(resp){layer.alert("提交成功");getline(7);}
+					});
+					//score.arrayMap[callArgs[0]]=callArgs[1];
+				};
+
+			</script>
+
+		</body>
+
+</html>
