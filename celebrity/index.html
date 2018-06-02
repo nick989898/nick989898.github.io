@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>首页</title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="author" content=""/>
+
+    <script src="js/modernizr.custom.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jquery.fancybox.css" rel="stylesheet">
+    <link href="css/flickity.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/queries.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<header id="main">
+    <section class="hero">
+        <div class="container">
+            <div class="row nav-wrapper">
+                <div class="col-md-6 col-sm-6 col-xs-6 text-left" style="font-size: 30px;color: #080808;text-shadow: 0 0 3px black;">
+                    Celebrity Motto
+                </div>
+            </div>
+            <div class="row hero-content">
+                <div class="col-md-12 text-center" style="margin-top: 30%">
+                    <div class="row">
+                        <input type="text" name="name" id="search_value" required="required" class="form wp2"
+                               placeholder="请输入人名（例如：鲁迅）">
+                    </div>
+                    <a href="javascript:void(0)" id="search" class="read-btn animated fadeInUp">查询</a>
+                    <h1 id="noExtension" style="display: none">请安装
+                        <a target="_blank"
+                           href="https://github.com/ChengOrangeJu/WebExtensionWallet">WebExtensionWallet</a> 再使用</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+</header>
+<section class="book-record" id="app">
+    <div class="container">
+        <div class="title-section text-center">
+            <h2 style="margin-top: 100px;color:#73d0da">名人名言</h2>
+            <div class="divider">
+                <i class="fa fa-star-o fa-lg"></i>
+            </div>
+        </div>
+        <table id="tableList" class="table table-bordered" style="color: #333;margin-top: 30px">
+            <thead>
+            <tr>
+                <th>名人</th>
+                <th>名言</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="l in list">
+                <td v-html="l.key"></td>
+                <td v-html="l.remark"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="relative fullwidth col-xs-12" style="margin-top: 30px">
+            <button id="addRecord" name="submit" class="form-btn new-btn">添加记录</button>
+        </div>
+    </div>
+</section>
+
+<section class="services-list page-section" id="info">
+    <div class="container">
+        <div class="row">
+            <div class="disc-section text-center">
+                <p style="font-size: 20px;">名人名言，每一个人，每一段文字，都值得去记录，基于星云链，永久保存！</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="set" class="container page-section">
+    <div class="inner contact wp2 delay-05s">
+        <div class="title-section text-center">
+            <h2 style="color:#73d0da">名人名言录入</h2>
+            <div class="divider">
+                <i class="fa fa-star-o fa-lg"></i>
+            </div>
+        </div>
+        <div class="contact-form">
+            <div class="col-xs-12 animated fadeInLeft visible" data-animation="fadeInLeft" data-animation-delay="300">
+                <div class="col-xs-6">
+                    <input type="text" id="name" class="form" placeholder="请输入人名">
+                </div>
+                <div class="col-xs-12">
+                    <input type="text" id="remark" class="form" placeholder="名言">
+                </div>
+
+            </div>
+            <div class="relative fullwidth col-xs-12">
+                <button id="push" name="submit" class="form-btn semibold new-btn">提交</button>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</section>
+<footer id="about" class="footer">
+    <section id="site-socials" class="no-padding white-bg">
+        <div class="site-socials inner no-padding">
+
+            <!-- Adress, Mail -->
+            <div class="address socials animated fadeInRight visible" data-animation="fadeInRight"
+                 data-animation-delay="500">
+                <!-- Phone Number, Mail -->
+                <p>Copyright &copy; 2018.基于新一代区块链公链<a href="https://nebulas.io/" target="_blank">NAS</a>&nbsp;&nbsp;&nbsp;
+                </p>
+            </div>
+            <!-- End Adress, Mail -->
+        </div>
+        <!-- End Inner -->
+    </section>
+</footer>
+<link rel="stylesheet" type="text/css" href="css/default.css"/>
+<link rel="stylesheet" type="text/css" href="css/component.css"/>
+<script src=js/nebPay.js></script>
+<script src="js/toucheffects.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/flickity.pkgd.min.js"></script>
+<script src="js/jquery.fancybox.pack.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="js/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    $(function () {
+        var NebPay = require("nebpay");
+        var nebPay = new NebPay();
+
+        var dappAddress = "n1mUWFBgdiRVJQGdn2jY5CKhuWBqa4m4zFC";
+        //检查扩展是否已安装
+        //如果安装了扩展，var“webExtensionWallet”将被注入到web页面中1
+        setTimeout(function () {
+            if (typeof (webExtensionWallet) === "undefined") {
+                //alert ("扩展钱包未安装，请先安装.")
+                $("#noExtension").show();
+            }
+        }, 500);
+
+
+        $("#search").click(function () {
+            var search_value = $("#search_value").val();
+            if (search_value == '') {
+                search_value = '鲁迅'
+            }
+            var to = dappAddress;
+            var value = "0";
+            var callFunction = "get";
+            var callArgs = [];
+            callArgs.push(search_value);
+            nebPay.simulateCall(to, value, callFunction, JSON.stringify(callArgs), {
+                listener: cbSearch
+            });
+        });
+
+        function cbSearch(resp) {
+            var result = resp.result
+            if (result === 'null' || result == '') {
+                layer.msg('');
+                layer.confirm('没有查到记录,是否添加记录？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function (index) {
+                    layer.close(index);
+                    location.href = "#set";
+                    $('#name').val($("#search_value").val()||'鲁迅');
+                }, function () {
+                    console.log(1);
+                });
+            } else {
+                $('#tableList').show();
+                var resultObj = JSON.parse(result);
+                var len = resultObj.remark.split('|-').length;
+                var obj = [];
+                for (var i = 0; i < len; i++) {
+                    var temp = {
+                        key: resultObj.key,
+                        remark:resultObj.remark.split('|-')[i]
+                    }
+                    obj.push(temp);
+                }
+                Vue.set(app, 'list', obj);
+                $('#app').show();
+                toTarget('app');
+
+                $('#addRecord').on('click',function(){
+                    toTarget('set');
+                })
+            }
+        }
+
+        function toTarget(id) {
+            $("html,body").animate({scrollTop: $("#" + id).offset().top}, 1000);
+        }
+
+        $("#push").click(function () {
+            var name = $('#name').val();
+            var remark = $('#remark').val();
+            if (name == '') {
+                layer.msg('人名不能为空');
+                return;
+            } else if (remark == '') {
+                layer.msg('名言不能为空');
+                return;
+            }
+            var to = dappAddress;
+            var value = "0";
+            var callFunction = "save"
+            var callArgs = [];
+            callArgs.push(name);
+            callArgs.push(remark);
+            nebPay.call(to, value, callFunction, JSON.stringify(callArgs), {
+                listener: cbPush
+            });
+        });
+
+        function cbPush(resp) {
+            console.log("response of push: " + resp)
+        }
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                list: []
+            }
+        });
+    })
+</script>
+</body>
+
+</html>
